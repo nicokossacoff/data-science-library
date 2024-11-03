@@ -10,97 +10,128 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score, silhouette_samples, adjusted_rand_score, jaccard_score
 from sklearn.base import clone
 from sklearn.utils import check_random_state
+from sklearn.decomposition import PCA
 
-class helper_functions:
-    def __init__(self):
-        pass
+def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray, K: int = 2, B: int = 10, random_state: int | None = None) -> np.ndarray:
+    '''
+    Computes the Hening stability index for a clustering model.
 
-    def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray, K: int = 2, B: int = 10, random_state: int | None = None) -> np.ndarray:
-        # Initialize random number generator
-        rng = np.random.RandomState(random_state)
+    Parameters:
+    -----------
+    X: np.ndarray | pd.DataFrame - Data to be clustered.
+    estimator: object - Clustering model to be used.
+    y_true: np.ndarray - Labels from the original clusters.
+    K: int - Number of clusters to be used.
+    B: int - Number of bootstrap samples to be used.
+    random_state: int | None - Random seed to be used.
+    '''
+    # Initialize random number generator
+    rng = np.random.RandomState(random_state)
 
-        y_true = pd.Series(y_true, index=X.index)
+    y_true = pd.Series(y_true, index=X.index)
 
-        # Initialize lists to store labels and indices
-        jaccard = np.zeros(shape=(B, K))
+    # Initialize lists to store labels and indices
+    jaccard = np.zeros(shape=(B, K))
 
-        # Loop over the number of iterations
-        for b in np.arange(B):
-            # Draw bootstrap samples and store indices
-            sample = rng.randint(low=0, high=X.shape[0], size=X.shape[0])
+    # Loop over the number of iterations
+    for b in np.arange(B):
+        # Draw bootstrap samples and store indices
+        sample = rng.randint(low=0, high=X.shape[0], size=X.shape[0])
 
-            # Clone the estimator to make sure that we are fitting fresh models
-            estimator = clone(estimator)
+        # Clone the estimator to make sure that we are fitting fresh models
+        estimator = clone(estimator)
 
-            # Randomize estimator if possible
-            if hasattr(estimator, 'random_state'):
-                estimator.random_state = random_state
-            
-            # Create a bootstrap sample
-            X_bootstrap = X[sample]
-
-            # Fit the clustering model
-            estimator.fit(X_bootstrap)
-            y_pred = pd.Series(estimator.labels_, index=X.index)
-
-            max_jaccard = []
-            # Store clustering outcome using original indices
-            for i in np.arange(K):
-                jaccard_scores = []
-                for j in np.arange(K):
-                    intersect = np.intersect1d(y_true.index[y_true == j], y_pred.index[y_pred == i])
-                    union = np.union1d(y_true.index[y_true == j], y_pred.index[y_pred == i])
-                    
-                    jaccard_scores.append(len(intersect) / len(union))
-                
-                max_jaccard.append(np.max(jaccard_scores))
-            
-            jaccard[b] = max_jaccard
-
-        return np.mean(jaccard)
-
-    
-    def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None) -> None:
-        if ax is None:
-            fig, ax = plt.subplots(figsize=(10, 10))
+        # Randomize estimator if possible
+        if hasattr(estimator, 'random_state'):
+            estimator.random_state = random_state
         
-        # Compute silhouette scores
-        silhouette_values = silhouette_samples(X, y)
+        # Create a bootstrap sample
+        X_bootstrap = X[sample]
 
-        n_clusters = len(np.unique(y))
-        y_lower, y_upper = 0, 0
-        yticks = []
-        colors = ['#E65983', '#2D3846', '#F6AE2D', '#3C7A89', '#F2F4F7', '#A7C5EB', '#E7ECEF', '#F4D35E', '#EE964B']
+        # Fit the clustering model
+        estimator.fit(X_bootstrap)
+        y_pred = pd.Series(estimator.labels_, index=X.index)
 
-        for i in np.arange(n_clusters):
-            cluster_silhouette_vals = silhouette_values[y == i]
-            cluster_silhouette_vals.sort()
-            y_upper += len(cluster_silhouette_vals)
-            ax.barh(np.arange(y_lower, y_upper), cluster_silhouette_vals, edgecolor='white', height=1, color=colors[i])
-            yticks.append((y_lower + y_upper) / 2)
-            y_lower += len(cluster_silhouette_vals)
+        max_jaccard = []
+        # Store clustering outcome using original indices
+        for i in np.arange(K):
+            jaccard_scores = []
+            for j in np.arange(K):
+                intersect = np.intersect1d(y_true.index[y_true == j], y_pred.index[y_pred == i])
+                union = np.union1d(y_true.index[y_true == j], y_pred.index[y_pred == i])
+                
+                jaccard_scores.append(len(intersect) / len(union))
+            
+            max_jaccard.append(np.max(jaccard_scores))
+        
+        jaccard[b] = max_jaccard
 
-        ax.axvline(x=np.mean(silhouette_values), color="black", linestyle="--")
-        ax.set_yticks(yticks, [f'Cluster {i}' for i in np.arange(n_clusters)])
-        ax.set_xlabel('Silhouette Coefficient')
-        ax.set_title('Silhouette Plot', loc='left', fontdict={'fontsize': 16, 'fontweight': 'bold'})
+    return np.mean(jaccard)
 
-    def plot_clusters(data: pd.DataFrame, labels: np.ndarray) -> None:
-        figure = px.scatter(
-            data,
-            x=data.columns[0],
-            y=data.columns[1],
-            color=labels.astype(str),
-            color_discrete_map={'0': '#E65983', '1': '#2D3846', '2': '#3D8791', '3': '#2D3846'},
-            size=[1] * data.shape[0],
-        )
-        figure.update_layout(
-            title='Clusters con datos estandarizados',
-            title_font=dict(size=16, family='Arial', color='black', weight='bold'),
-            xaxis_title=data.columns[0],
-            yaxis_title=data.columns[1],
-            plot_bgcolor='white',
-            yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
-            xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
-        )
-        figure.show()
+
+def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None) -> None:
+    '''
+    Silhouette plot for a clustering model.
+
+    Parameters:
+    -----------
+    X: np.ndarray - Data to be clustered.
+    y: np.ndarray - Labels from the clustering model.
+    '''
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 10))
+    
+    # Compute silhouette scores
+    silhouette_values = silhouette_samples(X, y)
+
+    n_clusters = len(np.unique(y))
+    y_lower, y_upper = 0, 0
+    yticks = []
+    colors = ['#E65983', '#2D3846', '#F6AE2D', '#3C7A89', '#F2F4F7', '#A7C5EB', '#E7ECEF', '#F4D35E', '#EE964B']
+
+    for i in np.arange(n_clusters):
+        cluster_silhouette_vals = silhouette_values[y == i]
+        cluster_silhouette_vals.sort()
+        y_upper += len(cluster_silhouette_vals)
+        ax.barh(np.arange(y_lower, y_upper), cluster_silhouette_vals, edgecolor='white', height=1, color=colors[i])
+        yticks.append((y_lower + y_upper) / 2)
+        y_lower += len(cluster_silhouette_vals)
+
+    ax.axvline(x=np.mean(silhouette_values), color="black", linestyle="--")
+    ax.set_yticks(yticks, [f'Cluster {i}' for i in np.arange(n_clusters)])
+    ax.set_xlabel('Silhouette Coefficient')
+    ax.set_title('Silhouette Plot', loc='left', fontdict={'fontsize': 16, 'fontweight': 'bold'})
+
+def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> None:
+    '''
+    Plots clusters using the first two principal components of the data.
+
+    Parameters:
+    -----------
+    data: pd.DataFrame - Data to be plotted.
+    labels: np.ndarray - Labels from the clustering model.
+    '''
+
+    pca = PCA(n_components=2).fit(data)
+    columns = [f'PC{i + 1} ({pca.explained_variance_ratio_[i] * 100:.2f}%)' for i in np.arange(2)]
+    pca = pca.transform(data)
+    pca = pd.DataFrame(pca, columns=columns)
+
+    figure = px.scatter(
+        data,
+        x=data.columns[0],
+        y=data.columns[1],
+        color=labels.astype(str),
+        color_discrete_map={'0': '#E65983', '1': '#2D3846', '2': '#3D8791', '3': '#2D3846'},
+        size=[1] * data.shape[0],
+    )
+    figure.update_layout(
+        title=title,
+        title_font=dict(size=16, family='Arial', color='black', weight='bold'),
+        xaxis_title=data.columns[0],
+        yaxis_title=data.columns[1],
+        plot_bgcolor='white',
+        yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+        xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+    )
+    figure.show()
