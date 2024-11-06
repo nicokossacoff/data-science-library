@@ -11,6 +11,7 @@ from sklearn.metrics import silhouette_score, silhouette_samples, adjusted_rand_
 from sklearn.base import clone
 from sklearn.utils import check_random_state
 from sklearn.decomposition import PCA
+from sklearn.neighbors import NearestNeighbors
 
 def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray, K: int = 2, B: int = 10, random_state: int | None = None) -> np.ndarray:
     '''
