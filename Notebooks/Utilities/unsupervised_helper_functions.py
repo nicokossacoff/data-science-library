@@ -135,3 +135,37 @@ def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> 
         xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
     )
     figure.show()
+
+def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = None) -> None:
+    '''
+    Plots a displot of the k-nearest neighbors distances.
+
+    Parameters:
+    -----------
+    data: pd.DataFrame - Data to be used.
+    k: int - Number of nearest neighbors to be used.
+    eps: int - Epsilon value to be used.
+    '''
+    nn = NearestNeighbors(n_neighbors=k).fit(data)
+    distances, indices = nn.kneighbors(data)
+    distances = np.sort(distances[:, k-1])
+
+    df = pd.DataFrame({'X': np.arange(0, len(distances)), 'Y': distances})
+
+    # Fit the nearest neighbors model
+    figure = px.scatter(df, x='X', y='Y')
+    figure.update_layout(
+        title='kNN-Distance',
+        title_font=dict(size=16, family='Arial', color='black', weight='bold'),
+        yaxis_title='kNN-Distance',
+        plot_bgcolor='white',
+        yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+        xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+    )
+
+    if eps is not None:
+        figure.add_hline(
+            y=eps,
+            line=dict(color='black', width=2, dash='dash')
+        )
+    figure.show()
