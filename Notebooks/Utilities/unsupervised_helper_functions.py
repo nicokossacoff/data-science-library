@@ -137,7 +137,7 @@ def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> 
     )
     figure.show()
 
-def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = None) -> None:
+def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = 1) -> None:
     '''
     Plots a displot of the k-nearest neighbors distances.
 
@@ -163,10 +163,40 @@ def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = None) ->
         yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
         xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
     )
+    figure.add_hline(
+        y=eps,
+        line=dict(color='black', width=2, dash='dash')
+    )
+    figure.show()
 
-    if eps is not None:
-        figure.add_hline(
-            y=eps,
-            line=dict(color='black', width=2, dash='dash')
-        )
+def plot_clusters3d(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> None:
+    pca = PCA(n_components=3).fit(data)
+    l = [f'PC{i + 1} ({v * 100:.3}%)' for (i, v) in enumerate(pca.explained_variance_ratio_)]
+    pca = pca.transform(data)
+
+    # Existing scatter plot
+    figure = px.scatter_3d(
+        x=pca[:, 0],
+        y=pca[:, 1],
+        z=pca[:, 2],
+        color=labels.astype(str),
+        color_discrete_map={'0': '#E65983', '1': '#2D3846', '2': '#3D8791', '3': '#2D3846'},
+        size=[1] * len(pca[:, 0]),
+    )
+
+    # Update layout
+    figure.update_layout(
+        title=title,
+        title_font=dict(size=16, family='Arial', color='black', weight='bold'),
+        scene=dict(
+            xaxis_title=l[0],
+            yaxis_title=l[1],
+            zaxis_title=l[2]
+        ),
+        plot_bgcolor='white',
+        yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+        xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+    )
+
+    figure.update_traces(marker=dict(line=dict(width=0)))
     figure.show()
