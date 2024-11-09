@@ -13,6 +13,9 @@ from sklearn.utils import check_random_state
 from sklearn.decomposition import PCA
 from sklearn.neighbors import NearestNeighbors
 
+import warnings
+warnings.simplefilter('ignore')
+
 def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray, K: int = 2, B: int = 10, random_state: int | None = None) -> np.ndarray:
     '''
     Computes the Hening stability index for a clustering model.
@@ -47,7 +50,7 @@ def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray
             estimator.random_state = random_state
         
         # Create a bootstrap sample
-        X_bootstrap = X[sample]
+        X_bootstrap = X.iloc[sample, :]
 
         # Fit the clustering model
         estimator.fit(X_bootstrap)
@@ -67,7 +70,7 @@ def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray
         
         jaccard[b] = max_jaccard
 
-    return np.mean(jaccard)
+    return np.mean(jaccard, axis=0)
 
 
 def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None) -> None:
@@ -199,4 +202,35 @@ def plot_clusters3d(data: pd.DataFrame, labels: np.ndarray, title: str = None) -
     )
 
     figure.update_traces(marker=dict(line=dict(width=0)))
+    figure.show()
+
+def plot_data(data: pd.DataFrame, title: str = None) -> None:
+    '''
+    Plots the data using the first two principal components.
+
+    Parameters:
+    -----------
+    data: pd.DataFrame - Data to be plotted.
+    title: str - Title of the plot.
+    '''
+    pca = PCA(n_components=2).fit(data)
+    l = [f'PC{i + 1} ({v * 100:.3}%)' for (i, v) in enumerate(pca.explained_variance_ratio_)]
+    pca = pca.transform(data)
+
+    figure = px.scatter(
+        x=pca[:, 0],
+        y=pca[:, 1],
+        size=[1] * len(pca[:, 0]),
+    )
+
+    figure.update_layout(
+        title=title,
+        title_font=dict(size=16, family='Arial', color='black', weight='bold'),
+        xaxis_title=l[0],
+        yaxis_title=l[1],
+        plot_bgcolor='white',
+        yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+        xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+    )
+
     figure.show()
