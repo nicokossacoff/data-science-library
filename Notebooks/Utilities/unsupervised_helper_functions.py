@@ -106,7 +106,7 @@ def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None) -> None:
     ax.set_xlabel('Silhouette Coefficient')
     ax.set_title('Silhouette Plot', loc='left', fontdict={'fontsize': 16, 'fontweight': 'bold'})
 
-def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> None:
+def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> px.scatter:
     '''
     Plots clusters using the first two principal components of the data.
 
@@ -140,7 +140,7 @@ def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> 
     )
     figure.show()
 
-def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = 1) -> None:
+def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = 1) -> px.scatter:
     '''
     Plots a displot of the k-nearest neighbors distances.
 
@@ -172,7 +172,7 @@ def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = 1) -> No
     )
     figure.show()
 
-def plot_clusters3d(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> None:
+def plot_clusters3d(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> px.scatter_3d:
     pca = PCA(n_components=3).fit(data)
     l = [f'PC{i + 1} ({v * 100:.3}%)' for (i, v) in enumerate(pca.explained_variance_ratio_)]
     pca = pca.transform(data)
@@ -204,7 +204,7 @@ def plot_clusters3d(data: pd.DataFrame, labels: np.ndarray, title: str = None) -
     figure.update_traces(marker=dict(line=dict(width=0)))
     figure.show()
 
-def plot_data(data: pd.DataFrame, title: str = None) -> None:
+def plot_data(data: pd.DataFrame, title: str = None) -> px.scatter:
     '''
     Plots the data using the first two principal components.
 
