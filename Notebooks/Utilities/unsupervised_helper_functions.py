@@ -6,6 +6,7 @@ import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
 from scipy.stats import multivariate_t, multivariate_normal
+from scipy.spatial.distance import cdist
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score, silhouette_samples, adjusted_rand_score, jaccard_score
 from sklearn.base import clone
@@ -32,6 +33,10 @@ def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray
     # Initialize random number generator
     rng = np.random.RandomState(random_state)
 
+    if isinstance(X, np.ndarray):
+        col = [f'X{i+1}' for i in np.arange(X.shape[1])]
+        X = pd.DataFrame(X, columns= col)
+    
     y_true = pd.Series(y_true, index=X.index)
 
     # Initialize lists to store labels and indices
@@ -73,7 +78,7 @@ def hening_stability(X: np.ndarray | pd.DataFrame, estimator, y_true: np.ndarray
     return np.mean(jaccard, axis=0)
 
 
-def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None) -> None:
+def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None, figsize: tuple = (10, 6)) -> None:
     '''
     Silhouette plot for a clustering model.
 
@@ -83,7 +88,7 @@ def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None) -> None:
     y: np.ndarray - Labels from the clustering model.
     '''
     if ax is None:
-        fig, ax = plt.subplots(figsize=(10, 10))
+        fig, ax = plt.subplots(figsize=figsize)
     
     # Compute silhouette scores
     silhouette_values = silhouette_samples(X, y)
@@ -234,3 +239,68 @@ def plot_data(data: pd.DataFrame, title: str = None) -> px.scatter:
     )
 
     figure.show()
+
+def centroids(X: np.ndarray | pd.DataFrame, labels: np.ndarray, K: int = 2) -> np.ndarray:
+    '''
+    Computes the centroids of a clustering model.
+
+    Parameters:
+    -----------
+    X: np.ndarray | pd.DataFrame - Data to be clustered.
+    labels: np.ndarray - Labels from the clustering model.
+    K: int - Number of clusters to be used.
+    '''
+    if isinstance(X, pd.DataFrame):
+        X = X.values
+
+    centroids = np.zeros(shape=(K, X.shape[1]))
+    for k in np.arange(K):
+        centroids[k] = np.mean(X[labels == k], axis=0)
+
+    return centroids
+
+def cluster_diameter(X: np.ndarray, labels: np.ndarray, cluster_label: int, metric: str = 'euclidean') -> float:
+    '''
+    Computes the diameter of a cluster.
+
+    Parameters:
+    -----------
+    X: np.ndarray - Data to be clustered.
+    labels: np.ndarray - Labels from the clustering model.
+    cluster_label: int - Cluster label to be used.
+    metric: str - Distance metric to calculate the distance between clusters.
+    '''
+    cluster_points = X[labels == cluster_label]
+    if len(cluster_points) < 2:
+        return 0.0
+    distances = cdist(cluster_points, cluster_points, metric=metric)
+    return np.max(distances)
+
+
+def dunn_index(X: np.ndarray | pd.DataFrame, labels: np.ndarray, K: int = 1, metric: str = 'euclidean') -> float:
+    '''
+    Computes the Dunn index for a clustering model.
+
+    Parameters:
+    -----------
+    X: np.ndarray - Data to be clustered.
+    labels: np.ndarray - Labels from the clustering model.
+    K: int - Number of clusters to be used.
+    metric: str - Distance metric to calculate the distance between clusters.
+    '''
+    # Compute the distance matrix
+    if isinstance(X, pd.DataFrame):
+        X = X.values
+
+    # Compute the centroids of each cluster
+    clusters = centroids(X, labels, K)
+
+    # Compute the minimum inter-cluster distance
+    dist = cdist(clusters, clusters, metric=metric)
+    min_inter_cluster_distance = np.min(dist[np.nonzero(dist)])
+
+    # Compute the diameter of each cluster
+    diameters = np.array([cluster_diameter(X, labels, i) for i in np.arange(K)])
+    max_intra_cluster_distance = np.max(diameters)
+
+    return min_inter_cluster_distance / max_intra_cluster_distance
