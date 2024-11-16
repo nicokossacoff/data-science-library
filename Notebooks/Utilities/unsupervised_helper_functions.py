@@ -111,7 +111,7 @@ def plot_silhouette(X: np.ndarray, y: np.ndarray, ax=None, figsize: tuple = (10,
     ax.set_xlabel('Silhouette Coefficient')
     ax.set_title('Silhouette Plot', loc='left', fontdict={'fontsize': 16, 'fontweight': 'bold'})
 
-def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> px.scatter:
+def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None, interactive: bool = True) -> px.scatter:
     '''
     Plots clusters using the first two principal components of the data.
 
@@ -126,24 +126,34 @@ def plot_clusters(data: pd.DataFrame, labels: np.ndarray, title: str = None) -> 
     pca = pca.transform(data)
     pca = pd.DataFrame(pca, columns=columns)
 
-    figure = px.scatter(
-        data,
-        x=data.columns[0],
-        y=data.columns[1],
-        color=labels.astype(str),
-        color_discrete_map={'0': '#E65983', '1': '#2D3846', '2': '#3D8791', '3': '#2D3846'},
-        size=[1] * data.shape[0],
-    )
-    figure.update_layout(
-        title=title,
-        title_font=dict(size=16, family='Arial', color='black', weight='bold'),
-        xaxis_title=data.columns[0],
-        yaxis_title=data.columns[1],
-        plot_bgcolor='white',
-        yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
-        xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
-    )
-    figure.show()
+    if interactive:
+        figure = px.scatter(
+            data,
+            x=data.columns[0],
+            y=data.columns[1],
+            color=labels.astype(str),
+            color_discrete_map={'0': '#E65983', '1': '#2D3846', '2': '#3D8791', '3': '#2D3846'},
+            size=[1] * data.shape[0],
+        )
+        figure.update_layout(
+            title=title,
+            title_font=dict(size=16, family='Arial', color='black', weight='bold'),
+            xaxis_title=data.columns[0],
+            yaxis_title=data.columns[1],
+            plot_bgcolor='white',
+            yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+            xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+        )
+        figure.show()
+    else:
+        fig, ax = plt.subplots(figsize=(12, 6))
+
+        ax.scatter(pca[columns[0]], pca[columns[1]], c=labels, cmap='viridis', s=50, alpha=0.7)
+        ax.set_xlabel(columns[0])
+        ax.set_ylabel(columns[1])
+        ax.set_title(title, loc='left', fontdict={'fontsize': 16, 'fontweight': 'bold'})
+        ax.legend()
+        plt.show()
 
 def knn_displot(data: np.ndarray | pd.DataFrame, k: int = 3, eps: int = 1) -> px.scatter:
     '''
@@ -209,7 +219,7 @@ def plot_clusters3d(data: pd.DataFrame, labels: np.ndarray, title: str = None) -
     figure.update_traces(marker=dict(line=dict(width=0)))
     figure.show()
 
-def plot_data(data: pd.DataFrame, title: str = None) -> px.scatter:
+def plot_data(data: pd.DataFrame, title: str = None, interactive: bool = True) -> px.scatter:
     '''
     Plots the data using the first two principal components.
 
@@ -222,23 +232,31 @@ def plot_data(data: pd.DataFrame, title: str = None) -> px.scatter:
     l = [f'PC{i + 1} ({v * 100:.3}%)' for (i, v) in enumerate(pca.explained_variance_ratio_)]
     pca = pca.transform(data)
 
-    figure = px.scatter(
-        x=pca[:, 0],
-        y=pca[:, 1],
-        size=[1] * len(pca[:, 0]),
-    )
+    if interactive:
+        figure = px.scatter(
+            x=pca[:, 0],
+            y=pca[:, 1],
+            size=[1] * len(pca[:, 0]),
+        )
+        figure.update_layout(
+            title=title,
+            title_font=dict(size=16, family='Arial', color='black', weight='bold'),
+            xaxis_title=l[0],
+            yaxis_title=l[1],
+            plot_bgcolor='white',
+            yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+            xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
+        )
+        figure.show()
+    else:
+        fig, ax = plt.subplots(figsize=(12, 6))
 
-    figure.update_layout(
-        title=title,
-        title_font=dict(size=16, family='Arial', color='black', weight='bold'),
-        xaxis_title=l[0],
-        yaxis_title=l[1],
-        plot_bgcolor='white',
-        yaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
-        xaxis=dict(showgrid=True, gridcolor='LightGray', showline=True, linecolor='Black', zeroline=True, zerolinecolor='LightGray'),
-    )
-
-    figure.show()
+        ax.scatter(pca[:, 0], pca[:, 1], s=50, alpha=0.7)
+        ax.set_xlabel(l[0])
+        ax.set_ylabel(l[1])
+        ax.set_title(title, loc='left', fontdict={'fontsize': 16, 'fontweight': 'bold'})
+        ax.legend()
+        plt.show()
 
 def centroids(X: np.ndarray | pd.DataFrame, labels: np.ndarray, K: int = 2) -> np.ndarray:
     '''
