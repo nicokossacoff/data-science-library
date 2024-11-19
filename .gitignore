@@ -1,4 +1,11 @@
+# MacOS system files
 .DS_Store
-test.ipynb
+
+# Python cache files
 __pycache__/
+
+# Helper files
+test.ipynb
 Notebooks/Unsupervised Learning/unsupervised_helper_functions.py
+
+research/
