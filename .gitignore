@@ -173,5 +173,6 @@ cython_debug/
 # MacOS files
 .DS_Store
 
-# CSV files
+# CSV and TXT files
 *.csv
+*.txt
