@@ -173,6 +173,10 @@ cython_debug/
 # MacOS files
 .DS_Store
 
-# CSV and TXT files
+# Ignore all log files
 *.csv
 *.txt
+*.log
+*.json
+*.xml
+*.xlsx
