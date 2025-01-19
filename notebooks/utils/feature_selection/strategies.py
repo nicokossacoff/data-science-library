@@ -6,6 +6,7 @@ sns.set_style('whitegrid')
 from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
 from sklearn.feature_selection import RFECV
 from sklearn.decomposition import PCA
+from sklearn import metrics
 
 class RecursiveFeatureSelection:
     def __init__(self, estimator, score, step: int, folds: int, n_jobs: int, X_train: pd.DataFrame, y_train: pd.DataFrame | pd.Series, random_state: int = 42):
@@ -72,3 +73,24 @@ class RecursiveFeatureSelection:
         
         self.df['is_fraud'] = self.y_train
         return self.df
+    
+def youden_index(y_true: pd.Series, y_pred: pd.Series) -> float:
+    '''
+    Computes Youden's J statistic for threshold optimization.
+    
+    Parameters:
+    -----------
+    :y_true: Series | True labels.
+    :y_pred: Series | Predicted labels.
+    
+    Returns:
+    --------
+    :float: Youden's J statistic.
+    '''
+    confusion_matrix = metrics.confusion_matrix(y_true, y_pred)
+    TN, FP, FN, TP = confusion_matrix.ravel()
+
+    sensitivity = TP / (TP + FN)
+    specificity = TN / (TN + FP)
+
+    return sensitivity + specificity - 1
