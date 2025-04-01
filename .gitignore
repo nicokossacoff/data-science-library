@@ -181,3 +181,5 @@ cython_debug/
 *.xml
 *.xlsx
 *.parquet
+
+.obsidian/
