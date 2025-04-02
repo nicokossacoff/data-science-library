@@ -3,7 +3,7 @@ Los **autoencoders** son redes neuronales cuya tarea de pretexto es reconstruir 
 - La primer parte se conoce como **encoder**, y se encarga de aprender una representación de los inputs, $h=f(x)$.
 - La segunda parte se conoce como **decoder**, y se encarga de reconstruir los inputs a partir de la representación que aprende el encoder, $r=g(h)$.
 Gráficamente, la estructura de un autoencoder se puede representar de la siguiente manera:
-![[autoencoder.png]]
+![Autoencoder structure](attachments/autoencoder.png)
 Al ser redes neuronales *feed-forward*, se entrenan usando las mismas técnicas que un MLP tradicional. Entonces, vamos a utilizar *back-propagation* para calcular los gradientes y *stochastic gradient descent* como el algoritmo de optimización que ajusta los pesos.
 
 Ahora, un modelo cuya función es reconstruir los inputs que recibe no es particularmente útil. Lo que ocurre es que la tarea de reconstrucción es solo una tarea de pretexto, y lo que esperamos al entrenar un autoencoder con esta tarea es que la representación $h$ que aprende contenga información valiosa sobre nuestros datos.
