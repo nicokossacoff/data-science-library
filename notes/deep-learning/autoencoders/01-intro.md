@@ -1,14 +1,16 @@
 # Introducción
+
 Los **autoencoders** son redes neuronales cuya tarea de pretexto es reconstruir los inputs que recibe. Su estructura consiste de dos partes:
 - La primer parte se conoce como **encoder**, y se encarga de aprender una representación de los inputs, $h=f(x)$.
 - La segunda parte se conoce como **decoder**, y se encarga de reconstruir los inputs a partir de la representación que aprende el encoder, $r=g(h)$.
+
 Gráficamente, la estructura de un autoencoder se puede representar de la siguiente manera:
 ![Autoencoder structure](attachments/autoencoder.png)
 Al ser redes neuronales *feed-forward*, se entrenan usando las mismas técnicas que un MLP tradicional. Entonces, vamos a utilizar *back-propagation* para calcular los gradientes y *stochastic gradient descent* como el algoritmo de optimización que ajusta los pesos.
 
 Ahora, un modelo cuya función es reconstruir los inputs que recibe no es particularmente útil. Lo que ocurre es que la tarea de reconstrucción es solo una tarea de pretexto, y lo que esperamos al entrenar un autoencoder con esta tarea es que la representación $h$ que aprende contenga información valiosa sobre nuestros datos.
 Cómo nos podemos asegurar de que el modelo aprenda esta información? Por lo general, diseñamos los autoencoders para que no puedan reconstruir los inputs a la perfección mediante algún tipo de restricción. Al restringir el modelo, lo que logramos es que se concentre en las características más importantes para la reconstrucción.
-***
+
 # Undercomplete Autoencoders
 
 Como ya dijimos, aplicando restricciones durante el entrenamiento, logramos que el modelo capture información relevante sobre la distribución de los datos. En particular, si lo que queremos es obtener las features que más información aportan, tenemos que restringir $h$ para que tenga una menor dimensión que $x$. De esta manera lo que hacemos es forzar al modelo para que se concentre en las features más importantes para representar los patrones en los datos.
@@ -19,7 +21,7 @@ donde $L$ puede ser cualquier función que penalice a nuestro modelo por ser dis
 Un aspecto clave a considerar es que, si el encoder y el decoder son lineales y la función de pérdida es el error cuadrático medio (ECM), entonces el autoencoder aprende el mismo **espacio latente** que PCA. Sin embargo, la ventaja que tienen los autoencoders sobre PCA es que, si el encoder o el decoder (o ambos) son no lineales, incluso usando el ECM como función de pérdida, podemos capturar un espacio latente más complejo y no lineal.
 
 Desafortunadamente, si no se imponen suficientes restricciones, incluso un autoencoder con un encoder y decoder lineales puede aprender a reconstruir los datos sin capturar información relevante en el proceso.
-***
+
 # Regularized Autoencoders
 
 Como mencionamos antes, si no se limita la capacidad del encoder y el decoder, el modelo puede aprender a reconstruir los datos sin extraer información útil. Idealmente, se podría entrenar exitosamente un autoencoder ajustando la capacidad del encoder y el decoder según la complejidad de la distribución a modelar.
