@@ -183,5 +183,5 @@ cython_debug/
 *.parquet
 
 .obsidian/
-
+.idea/
 research/
