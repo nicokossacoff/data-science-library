@@ -17,6 +17,14 @@ El **Teorema de Aproximación Universal** nos garantiza que una red neuronal con
 Entonces, en principio, un encoder con una única capa oculta es suficiente para aprender la representación $h$. Sin embargo, no solo estará limitado en el tipo de transformaciones que puede aprender, sino que tampoco será capaz de forzar ciertas propiedades sobre esa representación $h$. Agregar más capas ocultas a nuestro encoder nos permitiría aprender transformaciones más complejas y forzar propiedades sobre la representación $h$ (e.g., para forzar que sea esparsa).
 
 Por último, una mayor profundidad nos permite reducir los costos computacionales de aproximar algunas funciones (i.e., cuantas más capas ocultas tengamos, menos neuronas necesitamos por capa, lo que reduce la cantidad de pesos en nuestra red neuronal) y nos permite reducir la cantidad de datos de entrenamientos necesarios.
+## Encoders y Decoders Estocásticos
+
+Una estrategia muy común al diseñar las unidades de salida y la función de pérdida de una red neuronal es definir una distribución para el output, $P(y|x)$. La función de perdida es igual a menos la log-verosimilitud de la distribución, $-\log{P(y|x)}$. Por ejemplo, para los casos de clasificación binaria, la función de pérdida (i.e., menos la log-verosimilitud) es la entropía cruzada binaria, la cual se obtiene de asumir que $P(y|x)$ sigue una distribución Bernoulli.
+Podemos aplicar esta misma técnica para entrenar los autoencoders. Entonces, dada la representación $h$ y el output $x$ (que este caso también es el input), podemos asumir que el output del decoder sigue una distribución $P_{decoder}(x|h)$. La función de pérdida es igual a la log-verosimilitud,  $-\log{P_{decoder}(x|h)}$, cuya forma funcional depende de los supuestos que hagamos sobre $P_{decoder}(x|h)$.
+
+Podemos también generalizar esta idea al encoder, donde asumimos que su output tiene la siguiente distribución, $P_{encoder}(h|x)$.
+
+
 ***
 # Tipos de Autoencoders
 ## Undercomplete Autoencoders
@@ -42,10 +50,9 @@ $$L(x, g(f(x)))+\Omega(h)$$
 Al imponer la penalización $\Omega$, evitamos que el autoencoder tenga un error de reconstrucción bajo en todo el espacio.
 ### **Denoising Autoencoders**
 
-Cuando entrenamos un **denoising autoencoder (DAE)** minimizamos la siguiente función de pérdida:
-$$L(x,g(f(\tilde{x}))$$
-donde $\tilde{x}$ es una versión perturbada de $x$. Es decir, la tarea de pretexto ya no es reconstruir el input $x$, sino reducir el ruido de una versión perturbada, $\tilde{x}$.
-Entrenar de esta manera fuerza al encoder y al decoder a aprender de manera implícita la distribución $P(x)$ de los datos.
+Un **denoising autoencoder (DAE)** es un autoencoder que recibe una versión perturbada de los datos, $\tilde{x}$, y a partir de ella intentar predecir la versión original. En otras palabras, la tarea de pretexto del autoencoder ya no es reconstruir el input $x$, sino quitarle el ruido a una versión perturbada, $\tilde{x}$.
+![denoising-autoencoders](attachments/denoising-autoencoders.png)
+Entrenarlo de esta manera fuerza a que el autoencoder aprenda de manera implícita la distribución $P(x)$ de los datos.
 ### **Contractive Autoencoders**
 
 Los **contractive autoencoders (CAE)** se entrenan con una penalización $\Omega$ que penaliza la sensibilidad del espacio latente, $h=f(x)$, ante pequeños cambios en los inputs. Esta penalización utiliza la norma de Frobenius de la matriz Jacobiana (sencillamente, la suma de los cuadrados de los elementos de la matriz Jacobiana):
@@ -53,3 +60,7 @@ $$\Omega(h,x)=\lambda\sum_{i}||\nabla_{x}h_{i}||^{2}$$
 donde $\nabla_{x}h_{i}=\frac{\partial h}{\partial x}$.
 Al agregar esta penalización a la función de pérdida, obtenemos un autoencoder que, para aquellos puntos que se encuentran cerca en el espacio, también se van a encontrar cerca en el espacio latente.
 Debido a que esta penalización solo se aplica a la muestra de entrenamiento, el modelo se ve forzado a ser insensible a cambios en $x$ dentro de las regiones donde existen datos de entrenamiento, pero no por fuera de ellas. Esto permite tener una mejor estimar un mejor espacio latente y obliga al modelo a aprender las características más informativas sobre la distribución $P(X)$.
+***
+# Resources
+- \[1\] I. Goodfellow, Y. Bengio, and A. Courville, _Deep Learning_. Cambridge, MA: MIT Press, 2016. \[Online\]. Available: [http://www.deeplearningbook.org](http://www.deeplearningbook.org/).
+- \[2\] J. Jordan, "Introduction to autoencoders.", *Jeremy Jordan*, 19 Mar 2018. \[Online\]. Available: [https://www.jeremyjordan.me/autoencoders/](https://www.jeremyjordan.me/autoencoders/).
