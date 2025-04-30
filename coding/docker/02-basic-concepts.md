@@ -18,8 +18,8 @@ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
 
 Hay varios componentes importantes:
 - Como veremos más adelante, para ejecutar un contenedor necesitamos una _imagen_ de referencia (el contenedor lo vamos a crear a partir de esta _imagen_).
-  El flag `IMAGE[:TAG|@DIGEST]` nos permite definir el nombre y el tag (versión) de la imagen a partir de la cual vamos crear el contenedor. Si no especificamos la versión, se utiliza la última versión disponible (`latest`).
-  Por ejemplo, si quisiéramos ejecutar un contenedor utilizando la versión `24.04` de Ubuntu, deberíamos ejecutar el siguiente comando: `docker run ubuntu:24.04`.
+	- El flag `IMAGE[:TAG|@DIGEST]` nos permite definir el nombre y el tag (versión) de la imagen a partir de la cual vamos crear el contenedor. Si no especificamos la versión, se utiliza la última versión disponible (`latest`).
+	- Por ejemplo, si quisiéramos ejecutar un contenedor utilizando la versión `24.04` de Ubuntu, deberíamos ejecutar el siguiente comando: `docker run ubuntu:24.04`.
 - `[OPTIONS]` nos permite configurar nuestro contenedor. Por ejemplo, podemos ejecutar nuestro contenedor como un proceso en background (`-d`, `--detach`) o  podemos ponerle un nombre (`--name`). La lista completa se encuentra en la [documentación](https://docs.docker.com/reference/cli/docker/container/run/).
 
 ## Recursos
