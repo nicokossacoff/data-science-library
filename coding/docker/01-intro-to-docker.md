@@ -33,6 +33,5 @@ El cliente es la manera que los usuarios tienen de comunicarse con la API de Doc
 	<figcaption>Figura 2. En esta figura podemos ver como cuando el usuario ejecuta comandos (como `docker run` y `docker build`), el cliente se comunica a través de la REST API de Docler con el servidor (Docker deamon), quien se encarga de crear las imágenes y ejecutar los contenedores.
 	</figcaption>
 </figure>
-***
-# Resources
-- Docker documentation: [_What is Docker?_](https://docs.docker.com/get-started/docker-overview/#responsive-deployment-and-scaling)
+# 📚 Recursos
+- Docker documentation: [_What is Docker?_](https://docs.docker.com/get-started/docker-overview/#responsive-deployment-and-scaling).
