@@ -95,7 +95,7 @@ Una vez creada la imagen, podemos publicarla en el repositorio. Para eso, tenemo
 docker push nicokossacoff/python-app:v1.2.4
 ```
 
-## 📚 Resources
+## 📚 Recursos
 - Docker documentation. [What is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/).
 - Docker documentation. [Understanding image layers](https://docs.docker.com/get-started/docker-concepts/building-images/understanding-image-layers/).
 - Docker documentation. [Writing a Dockerfile](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/).
