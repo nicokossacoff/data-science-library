@@ -30,8 +30,9 @@ Docker utiliza una arquitectura de *cliente-servidor*, los cuales se comunican a
 El cliente es la manera que los usuarios tienen de comunicarse con la API de Docker. Cuando el usuario ejecuta un comando (e.g., `docker run`), el cliente realiza una llamada a la API de Docker, la cual es escuchada por el servidor, llamado Docker deamon (`dockerd`). El servidor se encarga de manejar las imágenes, los contenedores, los volúmenes, entre otros, que sean necesarios para poder responder a la llamada del cliente (en este caso, ejecutar un contenedor).
 <figure>
 	<img src='attachments/docker-architecture.png' align='center' />
-	<figcaption>Figura 2. En esta figura podemos ver como cuando el usuario ejecuta comandos (como `docker run` y `docker build`), el cliente se comunica a través de la REST API de Docler con el servidor (Docker deamon), quien se encarga de crear las imágenes y ejecutar los contenedores.
+	<figcaption>Figura 2. En esta figura podemos ver como cuando el usuario ejecuta comandos (como <code>docker run</code> y <code>docker build</code>), el cliente se comunica a través de la REST API de Docler con el servidor (Docker deamon), quien se encarga de crear las imágenes y ejecutar los contenedores.
 	</figcaption>
 </figure>
+
 # 📚 Recursos
 - Docker documentation: [_What is Docker?_](https://docs.docker.com/get-started/docker-overview/#responsive-deployment-and-scaling).
