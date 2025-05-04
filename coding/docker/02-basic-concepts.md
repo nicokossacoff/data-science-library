@@ -51,7 +51,7 @@ Las imágenes se crean a través de un **Dockerfile**. Un Dockerfile es un docum
 ### Comandos
 
 Algunos de los comandos más utilizadas son:
-- `FROM <image>`. Especifica la imagen base a partir de la cual queremos construir nuestra imagen. Por lo general, todos los Dockerfiles que armemos van a comenzar con este comando.
+- `FROM <image>`. Especifica la imagen base a partir de la cual queremos construir nuestra imagen. Por lo general, todos los Dockerfiles que armemos van a comenzar con este comando.[^1]
 - `WORKDIR <path>`. Define el directorio de trabajo de la imagen. Acá es donde se copian los archivos y se ejecutan los comandos. Un directorio muy utilizado es `/usr/local/app` o simplemente `/app`.
 - `COPY <host-path> <image-path>`.  Especifica a Docker los archivos que queremos copiar, desde `<host-path>` hasta `<image-path>`.
 - `RUN <command>`. Especifica el comando que queremos correr.
@@ -61,6 +61,7 @@ Algunos de los comandos más utilizadas son:
 - `CMD ['<command>', '<arg1>']`. Define el comando que se ejecuta al correr un container.
 	- No hay que confundir este comando con comandos como `RUN`. El comando `RUN` se ejecuta durante la creación de la imagen, creando una nueva capa. Por otro lado, el comando `CMD` se ejecuta al correr un contenedor, y no crea una nueva capa a la imagen (porque ya está creada).
 
+[^1]: Por lo general, vamos a usar la imagen base de Python (e.g., `python:3.10-slim`) para crear nuestras imágenes. Sin embargo, si en nuestra computadora usamos `conda` para crear los ambientes virtuales, es recomendable usar `continuumio/miniconda3` como imagen base.
 ## ⚙️ Crear una imagen
 
 Para crear una imagen, tenemos que correr el comando `docker build .`, donde `.` especifica el directorio en donde se va a encontrar el Dockerfile y todos los archivos de referencia.
@@ -99,3 +100,28 @@ docker push nicokossacoff/python-app:v1.2.4
 - Docker documentation. [What is an image?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/).
 - Docker documentation. [Understanding image layers](https://docs.docker.com/get-started/docker-concepts/building-images/understanding-image-layers/).
 - Docker documentation. [Writing a Dockerfile](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/).
+- Docker documentation. [Build, tag, and publish an image](https://docs.docker.com/get-started/docker-concepts/building-images/build-tag-and-publish-an-image/).
+***
+# Extras
+
+## 🧪 Crear una imagen de Docker usando `conda`
+
+Lo primero que tenemos que hacer es definir `continuumio/miniconda3` como la imagen base. Luego, copia el archivo `environment.yml` (que contiene todas las dependencias instaladas por `conda`), lo guarda dentro de nuestra imagen en la carpeta `/tmp/` y crea el ambiente virtual.
+Después activa el ambiente virtual, usando el comando `SHELL`, y copia todos los archivos de nuestro proyecto en la carpeta `/app`, la cual define como directorio principal. Por último, define el comando que se va a ejecutar cuando se cree el contenedor.
+
+```
+FROM continuumio/miniconda3
+
+# Create environment
+COPY environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml
+
+# Activate environment
+SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
+
+# Copy code
+COPY . /app
+WORKDIR /app
+
+CMD ["python", "main.py"]
+```
