@@ -180,8 +180,8 @@ cython_debug/
 *.json
 *.xml
 *.xlsx
-*.parquet
 
 .obsidian/
 .idea/
 research/
+notebooks/model-evaluation/data/
