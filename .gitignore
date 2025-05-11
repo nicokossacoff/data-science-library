@@ -175,7 +175,6 @@ cython_debug/
 
 # Ignore all log files
 *.csv
-*.txt
 *.log
 *.json
 *.xml
@@ -185,3 +184,4 @@ cython_debug/
 .idea/
 research/
 notebooks/model-evaluation/data/
+notebooks/unsupervised-learning/data/
