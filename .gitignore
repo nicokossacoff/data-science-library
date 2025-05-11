@@ -179,9 +179,16 @@ cython_debug/
 *.json
 *.xml
 *.xlsx
+*.parquet
+*.pickle
+*.hdf5
+*.h5
+*.db
+*.sqlite
+*.sqlite3
+*.txt
+*.pt
 
 .obsidian/
 .idea/
 research/
-notebooks/model-evaluation/data/
-notebooks/unsupervised-learning/data/
