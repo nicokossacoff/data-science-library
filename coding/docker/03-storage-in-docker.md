@@ -1,8 +1,8 @@
 ***
 # Introducción
 
-Como ya sabemos, las capas de una imagen son de tipo *read-only*. Esto quiere decir que son inmutables, y que no podemos crear, modificar o eliminar sus archivos al ejecutar un contenedor.
-Por esta razón, durante la creación del contenedor, Docker se encarga de crear una capa de escritura llamada *Writable Container Layer*. Esta es la única capa que tiene permisos para modificar el file-system durante la ejecución del contenedor. Algunas de sus funciones son:
+Como ya sabemos, las capas de una imagen son inmutables, es decir, no podemos crear, modificar o eliminar sus archivos al ejecutar un contenedor.
+Es por eso que, durante la creación del contenedor, Docker se encarga de crear una capa de escritura llamada *Writable Container Layer*. Esta es la única capa que tiene permisos para modificar el file-system durante la ejecución del contenedor. Algunas de sus funciones son:
 - Se encarga de guardar todas las modificaciones realizadas sobre el file-system del contenedor (i.e., si se agrega, modifica, o elimina algún archivo).
 - Nos asegura que los archivos que modificamos al ejecutar el contenedor no están modificando la imagen base. Es decir, antes de modificar un archivo, Docker hace una copia en la capa de escritura y recién ahí lo modifica, manteniendo intactas las capas de la imagen.
 	- Esto, a su vez, es lo que nos permite ejecutar varios contenedores simultáneamente a partir de una misma imagen.
