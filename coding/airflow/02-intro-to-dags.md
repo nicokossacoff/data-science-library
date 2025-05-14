@@ -56,11 +56,9 @@ def generate_dag():
 generate_dag()
 ```
 
-## 🏃🏼 DAG Run
+## 🏃🏼 DAG Run (⚠️WIP)
 
-
-
-# 🔨 Crear una tarea
+# 🔨 Crear una tarea (⚠️WIP)
 
 Las tareas son la unidad básica de ejecución en Airflow. Cada tarea tiene una dependencia, ya sea porque depende de la ejecución de una tarea para poder ejecutarse (se conoce como *upstream dependency*) o porque hay otras tareas que dependen de su ejecución para poder ser ejecutadas (se conoce como *downstream dependency*).
 Hay tres tipos básicos de tareas:
