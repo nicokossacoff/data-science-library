@@ -6,7 +6,9 @@ Branches allows you to have and systematically track multiple versions of the sa
 > A branch is like a _parallel universe_. Some files are the same, others are modified and others don't even exist when we compare branches.
 
 When you create a branch, you clone the state of the repository at that time. You can work on that branch without changing any files in the `master` branch (this branch is created with the repo) and then, once you're done working, you can merge branches. Here's a visual representation of this process:
-![git-branch-flow](attachments/git-branch-flow.png)
+<figure>
+	<img src='attachments/git-branch-flow.png' style="display: block; margin: 0 auto;"/>
+</figure>
 You can see the branches in your repo by running the `git branch` command. The asterisk (`*`) next to a branch identifies the current branch.
 ## Creating a new branch
 

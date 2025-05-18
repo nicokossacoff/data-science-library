@@ -10,7 +10,9 @@ In the following figure we have a visual representation of the commit structure:
 1. In the first commit, we modified the `report.md` and the `mental_health_survey.csv`. For each file we have a blob file containing all the changes we made.
 2. In the second commit, we modified the `mental_health_survey.csv` file and we added a new file called `summary_statistics.csv`, each one with a new blob file. The `report.md` files was not modified on this commit so it's linked to the previous blob file.
 3. The same happened in the final commit. We only modified the `report.md` and `mental_health_survey.csv` files, so the `summary_statistics.csv` file is linked to the previous blob file.
-![commit-structure](attachments/commit-structure.png)
+<figure>
+	<img src='attachments/commit-structure.png' style="display: block; margin: 0 auto;"/>
+</figure>
 ## Git log command
 
 We can see all the commits that were made to the repo in chronological order with the following command:
@@ -49,7 +51,9 @@ We can compare the staged files with the version in a specific commit by adding 
 git diff -r HEAD~1
 ```
 The `HEAD` flag compares the staged files with the last commit, the `HEAD~1` compares the staged files with the second most recent commit, and so on. The following diagram shows how the `HEAD` flag maps to the commits:
-![commit-history](attachments/commit-history.png)
+<figure>
+	<img src='attachments/commit-history.png' width=400 style="display: block; margin: 0 auto;"/>
+</figure>
 We can also use the `HEAD~` flag with the `git show` command to avoid using the hash:
 ```zsh
 git show HEAD~3

@@ -3,7 +3,9 @@ Suppose that you have three files in your staging area (figure below) but you on
 1. Un-stage the file back to your repo.
 2. Commit the remaining files in the staging area.
 3. Do the changes needed in the first file, stage it and then commit it.
-![unstage-files](unstage-files.png)
+<figure>
+	<img src='attachments/unstage-files.png' style="display: block; margin: 0 auto;"/>
+</figure>
 ## Un-stage a single file
 
 To un-stage a single file from the staging area, you must run the following command:
