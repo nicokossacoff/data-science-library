@@ -188,6 +188,7 @@ cython_debug/
 *.sqlite3
 *.txt
 *.pt
+*.pth
 
 .obsidian/
 .idea/
