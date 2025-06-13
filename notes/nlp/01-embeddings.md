@@ -84,3 +84,4 @@
 
 ***
 ## 📚 Recursos
+- Alammar, Jay. _The Illustrated Word2vec_. Jay Alammar, 19 Nov. 2017, [https://jalammar.github.io/illustrated-word2vec/](https://jalammar.github.io/illustrated-word2vec/).
