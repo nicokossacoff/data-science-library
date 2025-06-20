@@ -73,7 +73,7 @@
 
 ## Negative Sampling
 
-- Si el tamaño de nuestro vocabulario es muy grande, entonces actualizar los pesos de todos los $|V|$ embeddings en cada paso del loop de entrenamiento es computacionalmente muy costoso, e ineficiente.
+- Si el tamaño de nuestro vocabulario es muy grande, entonces actualizar los pesos de todos los $|V|$ embeddings en cada paso del entrenamiento es computacionalmente muy costoso e ineficiente.
 - La solución que plantean los autores se conoce como *negative sampling*. La idea es actualizar los pesos solo de un grupo acotado de palabras en nuestro vocabulario, haciendo más eficiente el entrenamiento del modelo.
 	1. Primero tenemos que extraer de nuestro corpus un par de palabras, donde la primera palabra es la que queremos predecir y la segunda palabra es el contexto. Esto se conoce como *positive example* (porque ocurren al mismo tiempo).
 		- Un ejemplo sería $(\text{perro}, \text{amigo})$.
