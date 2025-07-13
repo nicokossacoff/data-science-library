@@ -49,9 +49,9 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
     # Plot the decision boundary
     contour = ax.contourf(xx, yy, y_pred, cmap=matplotlib.pyplot.cm.RdYlBu, alpha=0.7)
     scatter = ax.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=matplotlib.pyplot.cm.RdYlBu)
-    ax.xlabel('X1')
-    ax.ylabel('X2')
-    ax.title('Decision Boundary')
+    ax.set_xlabel('X1')
+    ax.set_ylabel('X2')
+    ax.set_title('Decision Boundary')
 
     if ax is None:
         matplotlib.pyplot.show()
