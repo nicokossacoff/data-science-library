@@ -1,8 +1,9 @@
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import matplotlib
 import sklearn.metrics as metrics
+import warnings
 
 def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor, ax: matplotlib.axes.Axes = None):
     """
@@ -12,6 +13,7 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
         model (torch.nn.Module): Trained PyTorch model.
         X (torch.Tensor): Input features of shape (n_samples, 2).
         y (torch.Tensor): Labels of shape (n_samples,).
+        ax (matplotlib.axes.Axes): Optional matplotlib axes to plot on.
     """
     # Move the model and the data to CPU (works better with Numpy and Matplotlib)
     model = model.to(device='cpu')
@@ -34,6 +36,7 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
         # Get predictions from the model
         scores = model(grid)
     
+    # Convert scores to probabilities
     if scores.dim() == 1 or (scores.dim() == 2 and scores.shape[1] == 1):
         y_pred = torch.sigmoid(scores)
     else:
@@ -44,16 +47,25 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
 
     # Create a new axes if not provided
     if ax is None:
-        _, ax = matplotlib.pyplot.subplots(figsize=(8, 6))
+        _, ax = plt.subplots(figsize=(8, 6))
     
-    # Plot the decision boundary
-    contour = ax.contourf(xx, yy, y_pred, cmap=matplotlib.pyplot.cm.RdYlBu, alpha=0.7)
-    scatter = ax.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=matplotlib.pyplot.cm.RdYlBu)
+    # Check if predictions have meaningful variation
+    pred_std = y_pred.std()
+    pred_range = y_pred.max() - y_pred.min()
+    
+    if pred_std < 1e-6 or pred_range < 1e-6:
+        warnings.warn("Model predictions have very low variation. This may indicate that the model is not properly trained or lacks non-linear activation functions.")
+    
+    # Plot the decision boundary with normal colormap
+    contour = ax.contourf(xx, yy, y_pred, cmap=plt.cm.RdBu, levels=100, alpha=0.7)
+    
+    # Plot the data points
+    scatter = ax.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdBu, edgecolors='black', linewidth=0.5)
     ax.set_xlabel('X1')
     ax.set_ylabel('X2')
-    ax.set_title('Decision Boundary')
 
+    # Only show the plot if no axes was provided (standalone plot)
     if ax is None:
-        matplotlib.pyplot.show()
-        
+        plt.show()
+
     return contour, scatter
