@@ -191,6 +191,7 @@ cython_debug/
 *.pt
 *.pth
 *.tar
+*.pkl
 
 .obsidian/
 .idea/
