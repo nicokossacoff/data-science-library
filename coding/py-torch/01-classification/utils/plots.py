@@ -41,6 +41,7 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
         y_pred = torch.sigmoid(scores)
     else:
         y_pred = torch.softmax(scores, dim=1)
+        y_pred = torch.argmax(y_pred, dim=1)
 
     # Reshape predictions to match the grid shape
     y_pred = y_pred.reshape(xx.shape).detach().numpy()
