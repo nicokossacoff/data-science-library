@@ -1,7 +1,12 @@
+2025-10-18 23:01
+
+Status: #Ongoing 
+
+Tags: [[Natural Language Processing]]
 ***
 # Motivación
 
-- Una vez tokenizado nuestro corpus, utilizando alguna de las técnicas de tokenización como las que describimos [anteriormente](00-intro.md), debemos convertir nuestro vocabulario (i.e., tokens) a una representación numérica.
+- Una vez tokenizado nuestro corpus, utilizando alguna de las técnicas de tokenización como las que describimos anteriormente, debemos convertir nuestro vocabulario (i.e., tokens) a una representación numérica.
 - Una posible solución es utilizar el método de *One-Hot Encoding*. Este método consiste en generar, para cada token, un vector de largo $|V|$ (i.e., tamaño de nuestro vocabulario) que tenga un $1$ en la posición/índice correspondiente a ese token, y $0$ en el resto de las posiciones.
 	- Esto método tiene varios problemas:
 		- **Dimensión de los vectores.** La dimensión de nuestros vectores aumenta con el tamaño de nuestro vocabulario. Si el tamaño de nuestro vocabulario es muy grande, entonces vamos a tener vectores con muchas dimensiones (demasiadas!).
@@ -45,7 +50,7 @@
 	- **Skip-gram.** Dada una palabra, queremos predecir las palabras del contexto (ventana móvil que definimos nosotros).
 	- **Continuous Bag of Words (CBoW).** Dadas las palabras del contexto, predecir la palabra del centro.
 <figure>
-	<img src='attachments/Word2Vec.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/nlp/Word2Vec.png' style="display: block; margin: 0 auto;"/>
 </figure>
 
 - Para construir el embedding de la palabra *padre*, vamos a mirar las palabras (o tokens) que la acompaña con mayor frecuencia. De esa manera, si la palabra *padre* suele estar acompañada por la palabra *hijo*, entonces ambas palabras van a tener embeddings similares.
@@ -55,7 +60,7 @@
 - En este caso, nuestra tarea auxiliar consiste en predecir el contexto a partir de una única palabra.
 - La salida de nuestra red neuronal son vectores de dimensión $|V|$ (tamaño del vocabulario) con la probabilidad para cada uno de los tokens en nuestro vocabulario de pertenecer al contexto.
 <figure>
-	<img src='attachments/skipgram.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/nlp/skipgram.png' style="display: block; margin: 0 auto;"/>
 </figure>
 
 - La matriz de pesos, $W$, que aprende el modelo durante el entrenamiento es una matriz de dimensión $V\times d$, donde cada fila representa el embedding de uno de los tokens del vocabulario.
@@ -68,7 +73,7 @@
 - En este caso, nuestra tarea auxiliar consiste en predecir una palabra a partir del contexto.
 - La salida del modelo es un único vector, de dimensión $|V|$, con la probabilidad que tiene cada token en el vocabulario de ser la palabra que buscamos predecir.
 <figure>
-	<img src='attachments/cbow.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/nlp/cbow.png' style="display: block; margin: 0 auto;"/>
 </figure>
 
 ## Negative Sampling
@@ -82,6 +87,6 @@
 	3. Para cada par de palabras, entrenamos el modelo para que nos devuelve $1$ si es el *positive example* y $0$ si es un *negative sample*. Es decir, entrenamos a nuestro modelo para que nos diga si un par de palabras es real, como $(\text{perro}, \text{amigo})$, o es ficticio, como $(\text{perro}, \text{telescopio})$. Para eso utilizamos una función de pérdida logística.
 	4. Una vez calculada la función de pérdida, computamos los gradientes y actualizamos los pesos de la palabra que buscamos predecir (en nuestro ejemplo, $\text{perro}$), el contexto (en nuestro ejemplo, $\text{amigo}$) y las palabras seleccionadas aleatoriamente (en nuestro ejemplo, $\text{telescopio}$).
 
-***
-## 📚 Recursos
+# References
+
 - Alammar, Jay. _The Illustrated Word2vec_. Jay Alammar, 19 Nov. 2017, [https://jalammar.github.io/illustrated-word2vec/](https://jalammar.github.io/illustrated-word2vec/).

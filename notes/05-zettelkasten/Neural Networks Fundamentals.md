@@ -1,9 +1,14 @@
+2025-10-18 22:50
+
+Status: #Done
+
+Tags: [[Deep Learning]]
 ***
-# Introduction
+## Introduction
 
 - A **neural network** is a mathematical entity loosely inspired by the human brain. It uses interconnected units (also called neurons) in a layered structure resembling the human brain.
 <figure>
-	<img src='attachments/00-nn-architecture.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/deep-learning/00-nn-architecture.png' style="display: block; margin: 0 auto;"/>
 	<figcaption><b>Figure 1.</b> This is a simple neural network architecture. There are three main components: (1) the input layer, which contains the inputs to the model; (2) the hidden layers, which define the intermediate computations (or representations); and (3) the output layer, which contains the model's output.
 	</figcaption>
 </figure>
@@ -20,7 +25,7 @@
 - Hidden-units are artificial neurons or nodes that reside within the hidden layers of a neural network. These units significantly contribute to the learning process by learning meaningful **representations** of the input data.
 - Each hidden unit receives inputs from all the units in the preceding layer (this could be either the input layer or another hidden layer). These inputs are combined using a weighted sum (i.e., a linear transformation) and then passed through an activation function that introduces non-linearity to the mix, giving the neural network the capacity to learn complex patterns.
 <figure>
-	<img src='attachments/01-hidden-unit-calc.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/deep-learning/01-hidden-unit-calc.png' style="display: block; margin: 0 auto;"/>
 	<figcaption><b>Figure 2.</b> Activation of a hidden-unit. It receives a linear transformation of the inputs of the preceding layer and then pass it through a non-linear activation function.
 	</figcaption>
 </figure>
@@ -31,3 +36,5 @@
 	- A downside of ReLU is that if a neuron keeps getting negative inputs ($z < 0$), it outputs zero every time and its gradient stays zero. With no gradient flowing back, the weights stop updating—effectively killing the neuron.
 		- There are extensions of ReLU, like **Leaky ReLU** and **Parametric ReLU**, that add a small non-zero slope $\alpha_i$ when $z_i < 0$. In that case, the activation is defined as $g_i(z_i, \alpha_i) = \max{0, z_i} + \alpha_i \min{0, z_i}$.
 - Other activations like **Sigmoid** or **tanh** are usually avoided because they saturate over most of their range, which makes gradient-based learning harder.
+
+# References

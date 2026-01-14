@@ -1,3 +1,8 @@
+2025-10-18 23:07
+
+Status: #Done 
+
+Tags: [[Autoencoders]]
 ***
 # Introducción
 
@@ -7,7 +12,7 @@ Su estructura consiste de dos partes:
 - La segunda parte se conoce como **decoder**, cuya tarea es reconstruir los inputs a partir del espacio latente que aprendió el encoder, $\hat{x}=g(h)$.
 
 Gráficamente, la estructura de un autoencoder se representa de la siguiente manera:
-![autoencoders-computer-vision](attachments/autoencoders-computer-vision.png)
+![autoencoders-computer-vision](attachments/autoencoders/autoencoders-computer-vision.png)
 El espacio latente generado por el encoder se conoce como "cuello de botella", y es uno de los atributos más importantes en la estructura de nuestro modelo. Este "cuello de botella" lo que hace es limitar la cantidad de información que puede circular a través de nuestra red neuronal, obligando así al modelo a aprender una representación que capture los patrones y características más importantes en los datos. *Es como viajar con una valija pequeña, en donde solo podemos guardar las cosas que realmente necesitamos.*
 
 Al ser redes neuronales, los autoencoders se entrenan usando las mismas técnicas que usamos para un MLP tradicional: **back-propagation** para calcular los gradientes y **stochastic gradient descent** (o cualquier otro algoritmo de optimización) para ajustar los pesos.
@@ -53,7 +58,7 @@ Otra ventaja de este método es que logramos evitar que la red neuronal sobre-aj
 ### **Denoising Autoencoders**
 
 Un **denoising autoencoder (DAE)** es un autoencoder que recibe una versión perturbada de los datos, $\tilde{x}$, y a partir de ella intentar predecir la versión original. En otras palabras, la tarea de pretexto del autoencoder ya no es reconstruir el input $x$, sino quitarle el ruido a una versión perturbada, $\tilde{x}$.
-![denoising-autoencoders](attachments/denoising-autoencoders.png)
+![denoising-autoencoders](attachments/autoencoders/denoising-autoencoders.png)
 Entrenarlo de esta manera fuerza a que el autoencoder aprenda de manera implícita la distribución $P(x)$ de los datos.
 ### **Contractive Autoencoders**
 
@@ -62,7 +67,7 @@ $$\Omega(h,x)=\lambda\sum_{i}||\nabla_{x}h_{i}||^{2}$$
 donde $\nabla_{x}h_{i}=\frac{\partial h}{\partial x}$.
 Al agregar esta penalización a la función de pérdida, nos aseguramos de que aquellos puntos que se encuentran cerca en el espacio de mayor dimensionalidad, también se encuentren cerca en el espacio latente de menor dimensión. 
 Debido a que esta penalización solo se aplica a la muestra de entrenamiento, el modelo se ve forzado a ser insensible a cambios en $x$ dentro de las regiones donde existen datos de entrenamiento, pero no por fuera de ellas. Esto nos permite estimar un mejor espacio latente y obliga al modelo a aprender las características más informativas sobre la distribución $P(X)$.
-***
-# Resources
+# References
+
 - \[1\] I. Goodfellow, Y. Bengio, and A. Courville, _Deep Learning_. Cambridge, MA: MIT Press, 2016. \[Online\]. Available: [http://www.deeplearningbook.org](http://www.deeplearningbook.org/).
 - \[2\] J. Jordan, "Introduction to autoencoders.", *Jeremy Jordan*, 19 Mar 2018. \[Online\]. Available: [https://www.jeremyjordan.me/autoencoders/](https://www.jeremyjordan.me/autoencoders/).

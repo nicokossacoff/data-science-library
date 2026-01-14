@@ -1,14 +1,14 @@
-***
+2025-10-18 22:58
 
+Status: #Ongoing
+
+Tags: [[Natural Language Processing]]
+***
 # Definiciones
 
 - **Corpus (pl. corpora).** Se refiere a un conjunto de datos, recopilados de manera cuidadosa, a veces anotados y/o curados.
 - **Documentos/Instancias.** Los elementos que componen un corpus se conocen como documentos o instancias.
 	- Si quisiéramos hacer un paralelismo con los datasets que generalmente utilizamos en ML, un documento es equivalente a una observación.
-<figure>
-	<img src='attachments/corpus-documents.png' height=300 width=300 style="display: block; margin: 0 auto;"/>
-</figure>
-
 - **Vocabulario.** Cuando hablamos de vocabulario nos referimos a todas las palabras (sin duplicados) que podemos encontrar en nuestro corpus. Definimos $|V|$ como el tamaño del vocabulario.
 - **Palabras.** Definir que es una palabra es una tarea muy difícil porque depende de la tarea que intentamos desarrollar. Algunos factores que contribuyen a que esta tarea sea tan difícil son:
 	- Los signos de puntuación como el punto (`.`) y la coma (`,`) suele ser muy útiles para determinar límites entre las palabras, pero dependiendo de la tarea en la que estemos trabajando, puede que nos convenga considerar estos signos de puntuación como palabras.
@@ -37,7 +37,6 @@
 		- Muy utilizados por modelos de lenguajes (LLMs) porque permite resolver el problema de palabras que no se encuentran en el vocabulario (OOV).
 	- **ML-based Tokenization.** Utiliza algoritmos de ML para aprender reglas a partir de anotaciones en los textos. Estos métodos son muy flexibles y se pueden utilizar para varios idiomas.
 
-***
-## 📚 Recursos
+# References
 - (2024, June 25) *What is Tokenization in Natural Language Processing (NLP)?*. GeeksforGeeks. [URL](https://www.geeksforgeeks.org/tokenization-in-natural-language-processing-nlp/).
 - (2024, November 15) *Mastering Tokenization in NLP: An In-Depth Look at Methods, Types, and Challenges*. Calibrant. [URL](https://www.calibraint.com/blog/understanding-tokenization-in-nlp-guide).
