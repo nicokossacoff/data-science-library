@@ -6,7 +6,10 @@ Tags: [[Contrastive Learning]]
 ***
 # TL;DR
 
-- 
+- **Supervised Contrastive Learning** leverages available class labels to guide the representation learning process, effectively overcoming the inherent limitations of self-supervised methods.
+- **False Negatives & Sampling**: It addresses the issue where self-supervised models inadvertently push apart distinct samples of the same class. Instead, it utilizes *all* samples of the same class in a batch as positive pairs, ensuring tighter intra-class clustering.
+- **Task Relevance**: By relying on class labels rather than pretext task invariances, the model extracts features that are directly relevant to the downstream task, avoiding the potential bias introduced by specific data augmentations.
+- **Generalized InfoNCE Loss**: The loss function is adapted to handle multiple positive pairs per anchor, averaging the log-likelihood across all same-class samples in the batch to produce more robust embeddings.
 # Introduction
 
 - The [[Self-Supervised Contrastive Learning]] method has revolutionized representation learning by enabling the model to learn reach representations from unlabeled data.
@@ -24,8 +27,9 @@ Tags: [[Contrastive Learning]]
 		- In the supervised learning paradigm the task-relevant information is included in the class-labels, bypassing the need for pretext tasks to extract relevant information.
 # Loss functions
 
-- In Kohsla et al., the authors proposed the following contrastive loss function, which is a adaptation of the InfoNCE loss, a very popular self-supervised contrastive loss:$$\mathcal{L}=-\sum_{i\in I}\frac{1}{|P(i)|}\sum_{p\in P(i)}\log{\left(\frac{\exp{(z_{i}\cdot z_{p}/\tau)}}{\sum_{a\in A(i)}\exp{(z_{i}\cdot z_{a}/\tau)}}\right)}$$
-  where:
+- In Kohsla et al., the authors proposed the following contrastive loss function, which is a adaptation of the InfoNCE loss, a very popular self-supervised contrastive loss:
+$$\mathcal{L}=-\sum_{i\in I}\frac{1}{|P(i)|}\sum_{p\in P(i)}\log{\left(\frac{\exp{(z_{i}\cdot z_{p}/\tau)}}{\sum_{a\in A(i)}\exp{(z_{i}\cdot z_{a}/\tau)}}\right)}$$
+  - Here:
 	- $I\equiv\{1,\ldots,2N\}$ includes all samples in the batch (original and augmented).
 	- $z_{i}$ is the anchor sample and $z_{j(i)}$ is its augmented version.
 	- $A(i)\equiv I\textbackslash\{i\}$  includes all samples in the batch (original and augmented) except the anchor sample.

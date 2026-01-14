@@ -6,9 +6,10 @@ Tags: [[Contrastive Learning]]
 ***
 # TL;DR
 
-- Contrastive Learning aims at grouping similar samples closer and diverse samples far from each other, and it has proven to be very effective for learning rich representations.
-- In the self-supervised paradigm, pretext tasks are the main source for generating pseudo-labels based on inherent attributes of the data.
-- Pretext task are also responsible for filtering task-relevant information and establishing ground rules for creating the positive and negative samples needed in Contrastive Learning. However, choosing the right pretext tasks is not easy.
+- **Contrastive Learning** learns rich representations by pulling similar samples (positive pairs) closer while pushing diverse samples (negatives) apart.
+- **Pretext Tasks** are fundamental for generating pseudo-labels and defining positive/negative pairs via data augmentation. While they filter noise, selecting the right task is critical as introduced biases can aid or hinder specific downstream applications.
+- **Architectures** often employ dual encoders (Query/Key) or clustering mechanisms. 
+- **InfoNCE** is the standard loss function, which maximizes the likelihood of identifying the correct positive sample among a set of negatives.
 # Introduction
 
 - **Contrastive Learning** is a training method that aims at grouping similar samples closer and diverse samples far from each other, based on a similarity metric.
@@ -41,12 +42,12 @@ Tags: [[Contrastive Learning]]
 > (...) imagine we have an image of a cat in the training batch that is the current input to the model. During this pass, all other images in the batch are considered as negative. The issue arises when there are images of other cats in the negative samples. This condition forces the model to learn two images of cats as not similar during training despite both being from the same class. (Jaiswal, 11)
 # Loss functions
 
-- The most commonly used self-supervised contrastive loss function is the **InfoNCE** loss:$$\mathcal{L}_{\text{InfoNCE}}=-\log{\left(\frac{\exp{(\text{sim}(q,k_{+})/\tau)}}{\exp{(\text{sim}(q,k_{+})/\tau)}+\sum^{K}_{i=0}\exp{(\text{sim}(q,k_{i})/\tau))}}\right)}$$
-  where:
+- The most commonly used self-supervised contrastive loss function is the **InfoNCE** loss, where:
 	- $q$ is the anchor embedding
 	- $k_{+}$ and $k_{-}$ are the positive and negative samples, respectively.
 	- $\text{sim}(.)$ is a similarity metric, usually cosine similarity.
 	- $\tau$ is the temperature coefficient used to scale the similarities. It helps the model learn from **hard-negatives** (i.e., negative samples that are very similar to the anchor).
+$$\mathcal{L}_{\text{InfoNCE}}=-\log{\left(\frac{\exp{(\text{sim}(q,k_{+})/\tau)}}{\exp{(\text{sim}(q,k_{+})/\tau)}+\sum^{K}_{i=0}\exp{(\text{sim}(q,k_{i})/\tau))}}\right)}$$
 - This function calculates the negative log-likelihood of finding the correct positive sample from a set of candidates, which includes the positive and all the negative samples. In other words, in calculates how likely it is to find the positive sample for the current anchor.
 ***
 # References
