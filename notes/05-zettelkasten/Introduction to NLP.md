@@ -4,38 +4,38 @@ Status: #Ongoing
 
 Tags: [[Natural Language Processing]]
 ***
-# Definiciones
+# Definitions
 
-- **Corpus (pl. corpora).** Se refiere a un conjunto de datos, recopilados de manera cuidadosa, a veces anotados y/o curados.
-- **Documentos/Instancias.** Los elementos que componen un corpus se conocen como documentos o instancias.
-	- Si quisiéramos hacer un paralelismo con los datasets que generalmente utilizamos en ML, un documento es equivalente a una observación.
-- **Vocabulario.** Cuando hablamos de vocabulario nos referimos a todas las palabras (sin duplicados) que podemos encontrar en nuestro corpus. Definimos $|V|$ como el tamaño del vocabulario.
-- **Palabras.** Definir que es una palabra es una tarea muy difícil porque depende de la tarea que intentamos desarrollar. Algunos factores que contribuyen a que esta tarea sea tan difícil son:
-	- Los signos de puntuación como el punto (`.`) y la coma (`,`) suele ser muy útiles para determinar límites entre las palabras, pero dependiendo de la tarea en la que estemos trabajando, puede que nos convenga considerar estos signos de puntuación como palabras.
-	- En los corpus que contienen texto proveniente de conversaciones, los cuales suelen introducir **fragmentos** de palabras (e.g., cuando decimos *"por?"* en vez de decir *"por qué?"*) o **fillers** (e.g., cuando entre palabras decimos *"ehhh"*), tenemos que decidir si las consideramos como palabras o no. Esto va a depender de la tarea en la que estemos trabajando (e.g., en tareas de *speech recognition* suelen ser consideradas palabras porque nos ayudan a predecir la siguiente palabra en la conversación, pero en tareas como *machine transduction* no).
+- **Corpus (pl. corpora).** Refers to a set of data, carefully collected, sometimes annotated and/or curated.
+- **Documents/Instances.** The elements that make up a corpus are known as documents or instances.
+	- If we wanted to draw a parallel with the datasets we generally use in ML, a document is equivalent to an observation.
+- **Vocabulary.** When we talk about vocabulary, we refer to all the words (without duplicates) that we can find in our corpus. We define $|V|$ as the size of the vocabulary.
+- **Words.** Defining what a word is is a very difficult task because it depends on the task we are trying to develop. Some factors that contribute to making this task so difficult are:
+	- Punctuation marks such as the period (`.`) and comma (`,`) are usually very useful for determining word boundaries, but depending on the task we are working on, it may be convenient to consider these punctuation marks as words.
+	- In corpora containing text from conversations, which often introduce **fragments** of words (e.g., when we say *"por?"* instead of saying *"por qué?"*) or **fillers** (e.g., when between words we say *"ehhh"*), we have to decide whether to consider them as words or not. This will depend on the task we are working on (e.g., in *speech recognition* tasks they are usually considered words because they help us predict the next word in the conversation, but in tasks like *machine translation* they are not).
 
-# Text normalization
+# Text Normalization
 
 ## Tokenization
 
-- Es un proceso que consiste en separar textos en unidades individuales conocidas como **tokens**.
-- Los tokens pueden representar varias cosas: una palabra, una letra, un morfema, una sílaba, una frase, etc. Eso depende de la tarea en la que estemos trabajando.
-- Existen muchos formas de tokenizar un texto. Cual utilizamos depende de la tarea que estemos realizando.
-	- **Word Tokenization.** Divide el texto en palabras individuales. Suele ser muy útil para analizar el sentimiento de un texto o para generar resúmenes.
-	- **Character Tokenization.** Divide el texto en caracteres. Suele ser muy utilizado para la corrección de texto o para modelos de lenguajes (para idiomas con morfologías complejas).
-	- **Sub-word Tokenization.** Divide el texto en palabras o morfemas. Suele ser utilizado por modelos como BERT, porque a partir de estos tokens pueden construir palabras que no se encuentran en el vocabulario de entrenamiento.
-		- Por ejemplo, un modelo entrenado con un corpus en español puede que no se haya encontrado durante el entrenamiento con la palabra "*boludo*" que utilizamos los argentinos. Sin embargo, podría construir esa palabra a partir de los tokens en su vocabulario de entrenamiento.
-		- Es también muy útil para reducir el tamaño de los vocabularios.
-	- **Sentence Tokenization.** Divide el texto en frases o sentencias más cortas.
-	- **N-gram Tokenization.** Los tokens son secuencias de $N$ palabras. Muy útil cuando se quiere capturar el contexto en donde se utiliza.
-- También tenemos muchos tipos de tokenizadores:
-	- **Ruled-based Tokenization.** Utiliza un conjunto de reglas pre-definidas para separar el texto en tokens. Por ejemplo, podría utilizar los espacios en blanco para separar las palabras (tokens).
-	- **Statistical Tokenization.** Utiliza modelos estadísticos para definir el límite entre dos tokens.
-		- Suele ser muy útil para idiomas como el japonés o el chino, los cuales no utilizan espacios en blanco para separar las palabras.
-		- Dependen de que tan bien entrenados están los modelos.
-	- **Byte-Pair Encoding (BPE).** Parte de un vocabulario donde cada caracter es un token. A partir de ese vocabulario, va combinando caracteres en base a su frecuencia.
-		- Muy utilizados por modelos de lenguajes (LLMs) porque permite resolver el problema de palabras que no se encuentran en el vocabulario (OOV).
-	- **ML-based Tokenization.** Utiliza algoritmos de ML para aprender reglas a partir de anotaciones en los textos. Estos métodos son muy flexibles y se pueden utilizar para varios idiomas.
+- It is a process that consists of separating texts into individual units known as **tokens**.
+- Tokens can represent several things: a word, a letter, a morpheme, a syllable, a phrase, etc. That depends on the task we are working on.
+- There are many ways to tokenize a text. Which one we use depends on the task we are performing.
+	- **Word Tokenization.** Divides the text into individual words. It is usually very useful for analyzing the sentiment of a text or for generating summaries.
+	- **Character Tokenization.** Divides the text into characters. It is often used for text correction or for language models (for languages with complex morphologies).
+	- **Sub-word Tokenization.** Divides the text into words or morphemes. It is often used by models like BERT, because from these tokens they can build words that are not found in the training vocabulary.
+		- For example, a model trained with a Spanish corpus may not have encountered the word "*boludo*" that we Argentines use during training. However, it could construct that word from the tokens in its training vocabulary.
+		- It is also very useful for reducing the size of vocabularies.
+	- **Sentence Tokenization.** Divides the text into shorter phrases or sentences.
+	- **N-gram Tokenization.** The tokens are sequences of $N$ words. Very useful when you want to capture the context in which it is used.
+- We also have many types of tokenizers:
+	- **Ruled-based Tokenization.** Uses a set of pre-defined rules to separate the text into tokens. For example, it could use white spaces to separate words (tokens).
+	- **Statistical Tokenization.** Uses statistical models to define the boundary between two tokens.
+		- It is often very useful for languages like Japanese or Chinese, which do not use white spaces to separate words.
+		- They depend on how well trained the models are.
+	- **Byte-Pair Encoding (BPE).** Starts from a vocabulary where each character is a token. From that vocabulary, it combines characters based on their frequency.
+		- Widely used by language models (LLMs) because it solves the problem of words not found in the vocabulary (OOV).
+	- **ML-based Tokenization.** Uses ML algorithms to learn rules from annotations in texts. These methods are very flexible and can be used for multiple languages.
 
 # References
 - (2024, June 25) *What is Tokenization in Natural Language Processing (NLP)?*. GeeksforGeeks. [URL](https://www.geeksforgeeks.org/tokenization-in-natural-language-processing-nlp/).
