@@ -50,7 +50,7 @@ Tags: [[Natural Language Processing]]
 	- **Skip-gram.** Given a word, we want to predict the context words (a sliding window that we define).
 	- **Continuous Bag of Words (CBoW).** Given the context words, predict the center word.
 <figure>
-	<img src='attachments/nlp/Word2Vec.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/Word2Vec.png' style="display: block; margin: 0 auto;"/>
 </figure>
 
 - To build the embedding of the word *father*, we are going to look at the words (or tokens) that accompany it most frequently. That way, if the word *father* is usually accompanied by the word *son*, then both words will have similar embeddings.
@@ -60,7 +60,7 @@ Tags: [[Natural Language Processing]]
 - In this case, our auxiliary task consists of predicting the context from a single word.
 - The output of our neural network is vectors of dimension $|V|$ (size of the vocabulary) with the probability for each of the tokens in our vocabulary of belonging to the context.
 <figure>
-	<img src='attachments/nlp/skipgram.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/skipgram.png' style="display: block; margin: 0 auto;"/>
 </figure>
 
 - The weight matrix, $W$, that the model learns during training is a matrix of dimension $V\times d$, where each row represents the embedding of one of the tokens in the vocabulary.
@@ -73,7 +73,7 @@ Tags: [[Natural Language Processing]]
 - In this case, our auxiliary task consists of predicting a word from the context.
 - The output of the model is a single vector, of dimension $|V|$, with the probability that each token in the vocabulary has of being the word we want to predict.
 <figure>
-	<img src='attachments/nlp/cbow.png' style="display: block; margin: 0 auto;"/>
+	<img src='attachments/cbow.png' style="display: block; margin: 0 auto;"/>
 </figure>
 
 ## Negative Sampling
